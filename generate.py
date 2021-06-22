@@ -136,7 +136,8 @@ def fast_sample_sequence(
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", default="0", type=str, required=False, help="生成设备")
-    parser.add_argument("--length", default=-1, type=int, required=False, help="生成长度")
+    parser.add_argument("--length", default=512, type=int, required=False, help="生成长度")
+    parser.add_argument("--n_ctx", default=1024, type=int, required=False, help="生成时考虑的上下文长度")
     parser.add_argument(
         "--batch_size", default=1, type=int, required=False, help="生成的batch size"
     )
@@ -150,21 +151,21 @@ def main():
     parser.add_argument("--topp", default=0, type=float, required=False, help="最高积累概率")
     parser.add_argument(
         "--model_config",
-        default="config/model_config.json",
+        default="/Users/xuekeliu/PycharmProjects/AI/gpt2Shi/config.json",
         type=str,
         required=False,
         help="模型参数",
     )
     parser.add_argument(
         "--tokenizer_path",
-        default="vocab/vocab.txt",
+        default="/Users/xuekeliu/PycharmProjects/AI/gpt2Shi/vocab.txt",
         type=str,
         required=False,
         help="词表路径",
     )
     parser.add_argument(
         "--model_path",
-        default="model/epoch=0-step=99.ckpt",
+        default="/Users/xuekeliu/PycharmProjects/AI/gpt2Shi/pytorch_model.bin",
         type=str,
         required=False,
         help="模型路径",
@@ -186,6 +187,7 @@ def main():
 
     os.environ["CUDA_VISIBLE_DEVICES"] = args.device  # 此处设置程序使用哪些显卡
     length = args.length
+    n_ctx = args.n_ctx
     batch_size = args.batch_size
     nsamples = args.nsamples
     temperature = args.temperature
@@ -198,24 +200,27 @@ def main():
     tokenizer = BertTokenizer(vocab_file=args.tokenizer_path)
     model_config = GPT2Config.from_json_file(args.model_config)
     model = GPT2LMHeadModel(config=model_config)
-    state_dict = {
-        key[6:]: value
-        for key, value in torch.load(args.model_path, map_location="cpu")[
-            "state_dict"
-        ].items()
-    }
+    # state_dict = {
+    #     key[6:]: value
+    #     for key, value in torch.load(args.model_path, map_location="cpu")[
+    #         "state_dict"
+    #     ].items()
+    # }
+    # model.load_state_dict(state_dict)
+    m = torch.load(args.model_path, map_location='cpu')
+    state_dict = m
     model.load_state_dict(state_dict)
     model.to(device)
     model.eval()
 
-    for i in range(10):
+    for i in range(nsamples):
         raw_text = args.prefix
-        encoded = tokenizer.encode_plus(raw_text)["input_ids"]
+        encoded = tokenizer.encode_plus(raw_text)["input_ids"][:-1]
         out = sample_sequence(
             model,
             encoded,
-            length=512,
-            n_ctx=1024,
+            length=length,
+            n_ctx=n_ctx,
             tokenizer=tokenizer,
             temperature=temperature,
             top_k=topk,

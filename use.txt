@@ -1,0 +1,17 @@
+--fast_pattern
+
+# 诗
+gpt2Shi
+python3 ./generate.py --length=50 --nsamples=4 --prefix='[CLS]晚夏杯中月渐出，'  --fast_pattern --save_samples --save_samples_path=.
+
+# 散文
+gpt2SanWen
+python ./generate.py --length=200 --nsamples=4 --prefix='[CLS]已入深秋' --fast_pattern --save_samples --save_samples_path=.
+
+# 联
+gpt2Dui
+python3 ./generate.py --length=50 --nsamples=4 --prefix='[CLS]灯昏风幽人未眠-'  --fast_pattern --save_samples --save_samples_path=.
+
+# 通用
+gpt2TongYong
+python3 ./generate.py --length=200 --nsamples=4 --prefix='已入深秋' --fast_pattern  --save_samples --save_samples_path=.
