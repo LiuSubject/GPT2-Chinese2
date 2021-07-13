@@ -157,14 +157,14 @@ if __name__ == "__main__":
     )
     parser.add_argument("--epochs", default=5, type=int, required=False, help="训练循环")
     parser.add_argument(
-        "--batch_size", default=16, type=int, required=False, help="训练batch size"
+        "--batch_size", default=8, type=int, required=False, help="训练batch size"
     )
     parser.add_argument("--lr", default=0.00015, type=float, required=False, help="学习率")
     parser.add_argument(
         "--warmup_steps", default=2000, type=int, required=False, help="warm up步数"
     )
     parser.add_argument(
-        "--max_length", default=1024, type=int, required=False, help="单条文本最长长度"
+        "--max_length", default=4096, type=int, required=False, help="单条文本最长长度"
     )
     parser.add_argument(
         "--eval_interval", default=100, type=int, required=False, help="eval 步数"
