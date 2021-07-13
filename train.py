@@ -43,7 +43,7 @@ class Net(pl.LightningModule):
         vocab_path="vocab/vocab.txt",
         max_length=1024,
         warm_up_steps=0,
-        lr=1e-4,
+        lr=0.0001,
     ):
         super(Net, self).__init__()
         self.batch_size = batch_size
@@ -159,7 +159,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--batch_size", default=8, type=int, required=False, help="训练batch size"
     )
-    parser.add_argument("--lr", default=1.5e-4, type=float, required=False, help="学习率")
+    parser.add_argument("--lr", default=0.00015, type=float, required=False, help="学习率")
     parser.add_argument(
         "--warmup_steps", default=2000, type=int, required=False, help="warm up步数"
     )

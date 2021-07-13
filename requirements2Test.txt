@@ -2,3 +2,5 @@ pytorch-lightning
 transformers
 torch
 tqdm
+
+ERROR: tensorflow 2.5.0 has requirement tensorboard~=2.5, but you'll have tensorboard 2.4.1 which is incompatible.

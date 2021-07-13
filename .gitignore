@@ -7,7 +7,7 @@ vocab/.DS_Store
 .samples.txt
 .idea/modules.xml
 .idea/vcs.xml
-.idea
+.ideas
 .vscode
 *.pyc
 model
