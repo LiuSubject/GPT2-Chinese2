@@ -164,7 +164,7 @@ if __name__ == "__main__":
         "--warmup_steps", default=2000, type=int, required=False, help="warm up步数"
     )
     parser.add_argument(
-        "--max_length", default=4096, type=int, required=False, help="单条文本最长长度"
+        "--max_length", default=1024, type=int, required=False, help="单条文本最长长度"
     )
     parser.add_argument(
         "--eval_interval", default=100, type=int, required=False, help="eval 步数"
