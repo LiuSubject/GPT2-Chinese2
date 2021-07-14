@@ -214,6 +214,7 @@ if __name__ == "__main__":
         val_check_interval=eval_interval,
         callbacks=[learning_rate_callback, checkpoint_callback],
         precision=32,
+        resume_from_checkpoint=args.output_dir,
     )
     net = Net(
         batch_size,
@@ -226,7 +227,6 @@ if __name__ == "__main__":
         max_length=max_length,
         warm_up_steps=warmup_steps,
         lr=lr,
-        resume_from_checkpoint=args.output_dir
     )
     # d = torch.load('output_old/best.ckpt', map_location=torch.device("cpu"))["state_dict"]
     # d.pop('model.classifier.bias')
