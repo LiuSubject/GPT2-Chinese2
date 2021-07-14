@@ -226,6 +226,7 @@ if __name__ == "__main__":
         max_length=max_length,
         warm_up_steps=warmup_steps,
         lr=lr,
+        resume_from_checkpoint=args.output_dir
     )
     # d = torch.load('output_old/best.ckpt', map_location=torch.device("cpu"))["state_dict"]
     # d.pop('model.classifier.bias')
