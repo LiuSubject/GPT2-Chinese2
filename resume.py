@@ -215,6 +215,7 @@ if __name__ == "__main__":
         val_check_interval=eval_interval,
         callbacks=[learning_rate_callback, checkpoint_callback],
         precision=32,
+        resume_from_checkpoint='model/epoch=0-step=99.ckpt',
     )
     net = Net(
         batch_size,
@@ -228,8 +229,5 @@ if __name__ == "__main__":
         warm_up_steps=warmup_steps,
         lr=lr,
     )
-
-    # 断点续训
-    trainer = pl.Trainer(resume_from_checkpoint='model/epoch=0-step=99.ckpt')
 
     trainer.fit(net)
