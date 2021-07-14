@@ -227,7 +227,7 @@ if __name__ == "__main__":
         warm_up_steps=warmup_steps,
         lr=lr,
     )
-    d = torch.load('model/*.ckpt')
+    d = torch.load('model/epoch=0-step=799.ckpt')
     d.pop('model.classifier.bias')
     d.pop('model.classifier.weight')
 
