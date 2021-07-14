@@ -56,9 +56,7 @@ class Net(pl.LightningModule):
         self.lr = lr
         self.model_name = "bert_pretrained_model"
         self.config = GPT2Config.from_json_file(config_path)
-        modelRe = GPT2LMHeadModel(config=self.config)
-        modelRe.load_tf_weights(modelRe, GPT2Config.from_json_file(config_path), "model/epoch=0-step=899.ckpt")
-        self.model = modelRe
+        self.model = GPT2LMHeadModel(config=self.config)
         self.data = [line for line in open(data_path)]
         self.dataset_train = DS(
             self.data[:-valid_examples], vocab_path=vocab_path, max_length=max_length
@@ -234,7 +232,10 @@ if __name__ == "__main__":
         precision=32,
     )
 
-# 开始训练
+    # 断点续训
+    trainer = pl.Trainer(resume_from_checkpoint='model/epoch=0-step=899.ckpt')
+
+    # 开始训练
     trainer.fit(net)
     # model_config = GPT2Config.from_json_file(args.model_config)
     # model = GPT2LMHeadModel(config=model_config)
