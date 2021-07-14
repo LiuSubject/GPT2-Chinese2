@@ -2,12 +2,13 @@ from transformers import GPT2LMHeadModel, GPT2Config
 from transformers import AdamW, get_linear_schedule_with_warmup, BertTokenizer
 from torch.utils.data import Dataset, DataLoader
 from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor
-from pytorch_lightning.core.saving import ModelIO
 import pytorch_lightning as pl
 import torch
 import json
 import argparse
 import os
+import tensorflow as tf
+from tensorflow import keras
 
 # 11846807
 
@@ -55,7 +56,10 @@ class Net(pl.LightningModule):
         self.lr = lr
         self.model_name = "bert_pretrained_model"
         self.config = GPT2Config.from_json_file(config_path)
-        self.model = GPT2LMHeadModel(config=self.config)
+        modelRe = GPT2LMHeadModel(config=self.config)
+        latest = tf.train.latest_checkpoint("model/epoch=0-step=799.ckpt")
+        modelRe.load_weights(latest)
+        self.model = modelRe
         self.data = [line for line in open(data_path)]
         self.dataset_train = DS(
             self.data[:-valid_examples], vocab_path=vocab_path, max_length=max_length
@@ -205,17 +209,6 @@ if __name__ == "__main__":
         monitor="val_loss",
         mode="min",
     )
-    learning_rate_callback = LearningRateMonitor()
-    trainer = pl.Trainer(
-        default_root_dir=output_path,
-        gradient_clip_val=1,
-        max_epochs=epochs,
-        gpus=args.device,
-        distributed_backend="dp",
-        val_check_interval=eval_interval,
-        callbacks=[learning_rate_callback, checkpoint_callback],
-        precision=32,
-    )
     net = Net(
         batch_size,
         epochs,
@@ -228,4 +221,32 @@ if __name__ == "__main__":
         warm_up_steps=warmup_steps,
         lr=lr,
     )
+
+# 恢复训练
+    learning_rate_callback = LearningRateMonitor()
+    trainer = pl.Trainer(
+        default_root_dir=output_path,
+        gradient_clip_val=1,
+        max_epochs=epochs,
+        gpus=args.device,
+        distributed_backend="dp",
+        val_check_interval=eval_interval,
+        callbacks=[learning_rate_callback, checkpoint_callback],
+        precision=32,
+    )
+
+# 开始训练
     trainer.fit(net)
+    # model_config = GPT2Config.from_json_file(args.model_config)
+    # model = GPT2LMHeadModel(config=model_config)
+    # model = model.load_from_checkpoint(checkpoint_path='model/epoch=0-step=799.ckpt')
+
+    # tokenizer = BertTokenizer(vocab_file=args.tokenizer_path)
+    # model_config = GPT2Config.from_json_file(args.model_config)
+    # model = GPT2LMHeadModel(config=model_config)
+    # latest = trainer.train.latest_checkpoint("model/epoch=0-step=799.ckpt")
+    # model.load_weights(latest)
+    #
+    #
+    # trainer
+
