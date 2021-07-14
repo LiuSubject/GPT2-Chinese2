@@ -181,6 +181,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--output_dir", default="model/", type=str, required=False, help="模型输出路径"
     )
+    parser.add_argument(
+        "--resume_dir", default="model/*.ckpt", type=str, required=False, help="模型恢复路径"
+    )
     args = parser.parse_args()
 
     val_examples = args.val_examples
@@ -189,6 +192,7 @@ if __name__ == "__main__":
     batch_size = args.batch_size
     epochs = args.epochs
     output_path = args.output_dir
+    resume_dir = args.resume_dir
     eval_interval = args.eval_interval
     lr = args.lr
     warmup_steps = args.warmup_steps
@@ -214,7 +218,7 @@ if __name__ == "__main__":
         val_check_interval=eval_interval,
         callbacks=[learning_rate_callback, checkpoint_callback],
         precision=32,
-        resume_from_checkpoint=args.output_dir,
+        resume_from_checkpoint=args.resume_dir,
     )
     net = Net(
         batch_size,
