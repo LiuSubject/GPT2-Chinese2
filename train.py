@@ -228,8 +228,8 @@ if __name__ == "__main__":
         lr=lr,
     )
     d = torch.load('model/epoch=0-step=799.ckpt')
-    d.pop('model.classifier.bias')
-    d.pop('model.classifier.weight')
+    # d.pop('model.classifier.bias')
+    # d.pop('model.classifier.weight')
 
     net.load_state_dict(d, strict=False)
     trainer.fit(net)
