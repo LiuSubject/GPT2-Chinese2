@@ -2,6 +2,7 @@ from transformers import GPT2LMHeadModel, GPT2Config
 from transformers import AdamW, get_linear_schedule_with_warmup, BertTokenizer
 from torch.utils.data import Dataset, DataLoader
 from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor
+from pytorch_lightning.core.saving import ModelIO
 import pytorch_lightning as pl
 import torch
 import json
@@ -181,18 +182,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--output_dir", default="model/", type=str, required=False, help="模型输出路径"
     )
-    parser.add_argument(
-        "--resume_dir", default="model/*.ckpt", type=str, required=False, help="模型恢复路径"
-    )
     args = parser.parse_args()
-
     val_examples = args.val_examples
     vocab_path = args.vocab_path
     max_length = args.max_length
     batch_size = args.batch_size
     epochs = args.epochs
     output_path = args.output_dir
-    resume_dir = args.resume_dir
     eval_interval = args.eval_interval
     lr = args.lr
     warmup_steps = args.warmup_steps
@@ -218,7 +214,6 @@ if __name__ == "__main__":
         val_check_interval=eval_interval,
         callbacks=[learning_rate_callback, checkpoint_callback],
         precision=32,
-        resume_from_checkpoint=args.resume_dir,
     )
     net = Net(
         batch_size,
@@ -232,9 +227,9 @@ if __name__ == "__main__":
         warm_up_steps=warmup_steps,
         lr=lr,
     )
-    # d = torch.load('output_old/best.ckpt', map_location=torch.device("cpu"))["state_dict"]
-    # d.pop('model.classifier.bias')
-    # d.pop('model.classifier.weight')
+    d = torch.load('model/*.ckpt')
+    d.pop('model.classifier.bias')
+    d.pop('model.classifier.weight')
 
-    # net.load_state_dict(d, strict=False)
+    net.load_state_dict(d, strict=False)
     trainer.fit(net)
