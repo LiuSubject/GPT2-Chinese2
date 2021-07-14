@@ -178,7 +178,7 @@ if __name__ == "__main__":
         "--t_total", default=100000, type=int, required=False, help="计划训练多少步"
     )
     parser.add_argument(
-        "--log_step", default=1, type=int, required=False, help="多少步汇报一次loss"
+        "--log_step", default=10, type=int, required=False, help="多少步汇报一次loss"
     )
     parser.add_argument(
         "--output_dir", default="model/", type=str, required=False, help="模型输出路径"
