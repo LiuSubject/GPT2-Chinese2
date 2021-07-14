@@ -229,7 +229,6 @@ if __name__ == "__main__":
     )
     d = torch.load('model/epoch=0-step=799.ckpt', map_location=lambda storage, loc: storage)
     epoch = d['epoch']
-    arch = d['arch']
 
     net.load_state_dict(epoch)
     trainer.fit(net)
