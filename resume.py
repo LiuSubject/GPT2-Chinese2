@@ -57,7 +57,7 @@ class Net(pl.LightningModule):
         self.model_name = "bert_pretrained_model"
         self.config = GPT2Config.from_json_file(config_path)
         modelRe = GPT2LMHeadModel(config=self.config)
-        latest = tf.train.latest_checkpoint("model/epoch=0-step=599.ckpt")
+        latest = tf.train.latest_checkpoint("model/epoch=0-step=799.ckpt")
         modelRe.load_weights(latest)
         self.model = modelRe
         self.data = [line for line in open(data_path)]
