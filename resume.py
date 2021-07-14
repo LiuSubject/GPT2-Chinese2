@@ -230,6 +230,6 @@ if __name__ == "__main__":
     )
 
     # 断点续训
-    trainer = pl.Trainer(resume_from_checkpoint='model/epoch=0-step=899.ckpt')
+    trainer = pl.Trainer(resume_from_checkpoint='model/epoch=0-step=99.ckpt')
 
     trainer.fit(net)
