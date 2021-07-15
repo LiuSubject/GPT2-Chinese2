@@ -205,18 +205,38 @@ if __name__ == "__main__":
         monitor="val_loss",
         mode="min",
     )
+    testfiles = []
+    testfilepaths = []
+    L = len(os.path.abspath('.'))
+    have_save_path = False
+    def searchfile(path):
+        for item in os.listdir(path):
+            if not os.path.isdir(os.path.join(path, item)):
+                have_save_path = True
     learning_rate_callback = LearningRateMonitor()
-    trainer = pl.Trainer(
-        default_root_dir=output_path,
-        gradient_clip_val=1,
-        max_epochs=epochs,
-        gpus=args.device,
-        distributed_backend="dp",
-        val_check_interval=eval_interval,
-        callbacks=[learning_rate_callback, checkpoint_callback],
-        precision=32,
-        resume_from_checkpoint='model/epoch=0-step=99.ckpt',
-    )
+    if(have_save_path):
+        trainer = pl.Trainer(
+            default_root_dir=output_path,
+            gradient_clip_val=1,
+            max_epochs=epochs,
+            gpus=args.device,
+            distributed_backend="dp",
+            val_check_interval=eval_interval,
+            callbacks=[learning_rate_callback, checkpoint_callback],
+            precision=32,
+            resume_from_checkpoint='model/save.ckpt',
+        )
+    else:
+        trainer = pl.Trainer(
+            default_root_dir=output_path,
+            gradient_clip_val=1,
+            max_epochs=epochs,
+            gpus=args.device,
+            distributed_backend="dp",
+            val_check_interval=eval_interval,
+            callbacks=[learning_rate_callback, checkpoint_callback],
+            precision=32,
+        )
     net = Net(
         batch_size,
         epochs,
