@@ -209,12 +209,11 @@ if __name__ == "__main__":
     testfilepaths = []
     L = len(os.path.abspath('.'))
     have_save_path = False
-    def searchfile(path):
-        for item in os.listdir(path):
-            if not os.path.isdir(os.path.join(path, item)):
-                have_save_path = True
+    for item in os.listdir("model/"):
+        if not os.path.isdir(os.path.join("model/", item)):
+            have_save_path = True
     learning_rate_callback = LearningRateMonitor()
-    if(have_save_path):
+    if have_save_path:
         trainer = pl.Trainer(
             default_root_dir=output_path,
             gradient_clip_val=1,
