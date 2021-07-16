@@ -225,7 +225,6 @@ if __name__ == "__main__":
             precision=32,
             resume_from_checkpoint='model/save.ckpt',
         )
-        trainer.fit()
     else:
         trainer = pl.Trainer(
             default_root_dir=output_path,
@@ -237,16 +236,17 @@ if __name__ == "__main__":
             callbacks=[learning_rate_callback, checkpoint_callback],
             precision=32,
         )
-        net = Net(
-            batch_size,
-            epochs,
-            t_total=t_total,
-            config_path=config_path,
-            data_path=data_path,
-            valid_examples=val_examples,
-            vocab_path=vocab_path,
-            max_length=max_length,
-            warm_up_steps=warmup_steps,
-            lr=lr,
-        )
-        trainer.setup_trainer()
+
+    net = Net(
+        batch_size,
+        epochs,
+        t_total=t_total,
+        config_path=config_path,
+        data_path=data_path,
+        valid_examples=val_examples,
+        vocab_path=vocab_path,
+        max_length=max_length,
+        warm_up_steps=warmup_steps,
+        lr=lr,
+    )
+    trainer.setup_trainer()
