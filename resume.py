@@ -249,4 +249,4 @@ if __name__ == "__main__":
         warm_up_steps=warmup_steps,
         lr=lr,
     )
-    trainer.setup_trainer()
+    trainer.fit(net)
