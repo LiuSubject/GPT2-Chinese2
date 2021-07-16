@@ -249,9 +249,9 @@ if __name__ == "__main__":
         lr=lr,
     )
 
-    if have_save_path:
-        checkpoint_get_epoch = torch.load('model/save.ckpt')
-        start_epoch = checkpoint_get_epoch['epoch']
-        trainer.on_epoch_start(start_epoch)
+    print(trainer)
+    # if have_save_path:
+    #     checkpoint_get_epoch = torch.load('model/save.ckpt')
+    #     start_epoch = checkpoint_get_epoch['epoch']
 
-    trainer.fit(net)
+    # trainer.fit(net)
