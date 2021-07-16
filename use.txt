@@ -15,3 +15,5 @@ python3 ./generate.py --length=50 --nsamples=4 --prefix='[CLS]灯昏风幽人未
 # 通用
 gpt2TongYong
 python3 ./generate.py --length=200 --nsamples=4 --prefix='已入深秋' --fast_pattern  --save_samples --save_samples_path=.
+
+1
