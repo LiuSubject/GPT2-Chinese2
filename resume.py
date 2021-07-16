@@ -249,7 +249,7 @@ if __name__ == "__main__":
         lr=lr,
     )
 
-    print(trainer.on_train_epoch_start())
+    print(trainer.current_epoch)
     # if have_save_path:
     #     checkpoint_get_epoch = torch.load('model/save.ckpt')
     #     start_epoch = checkpoint_get_epoch['epoch']
