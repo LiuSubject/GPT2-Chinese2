@@ -225,9 +225,6 @@ if __name__ == "__main__":
             precision=32,
             resume_from_checkpoint='model/save.ckpt',
         )
-        checkpoint_get_epoch = torch.load('model/save.ckpt')
-        start_epoch = checkpoint_get_epoch['epoch']
-        trainer.self.on_epoch_start(start_epoch)
     else:
         trainer = pl.Trainer(
             default_root_dir=output_path,
