@@ -2,12 +2,10 @@ from transformers import GPT2LMHeadModel, GPT2Config
 from transformers import AdamW, get_linear_schedule_with_warmup, BertTokenizer
 from torch.utils.data import Dataset, DataLoader
 from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor
-from pytorch_lightning.core.saving import ModelIO
 import pytorch_lightning as pl
 import torch
 import json
 import argparse
-import os
 
 # 11846807
 
@@ -56,6 +54,7 @@ class Net(pl.LightningModule):
         self.model_name = "bert_pretrained_model"
         self.config = GPT2Config.from_json_file(config_path)
         self.model = GPT2LMHeadModel(config=self.config)
+        self.data = [json.loads(line.strip()) for line in open(data_path)]
         self.data = [line for line in open(data_path)]
         self.dataset_train = DS(
             self.data[:-valid_examples], vocab_path=vocab_path, max_length=max_length
@@ -159,7 +158,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--epochs", default=5, type=int, required=False, help="训练循环")
     parser.add_argument(
-        "--batch_size", default=3, type=int, required=False, help="训练batch size"
+        "--batch_size", default=8, type=int, required=False, help="训练batch size"
     )
     parser.add_argument("--lr", default=0.00015, type=float, required=False, help="学习率")
     parser.add_argument(
@@ -178,12 +177,13 @@ if __name__ == "__main__":
         "--t_total", default=100000, type=int, required=False, help="计划训练多少步"
     )
     parser.add_argument(
-        "--log_step", default=10, type=int, required=False, help="多少步汇报一次loss"
+        "--log_step", default=1, type=int, required=False, help="多少步汇报一次loss"
     )
     parser.add_argument(
         "--output_dir", default="model/", type=str, required=False, help="模型输出路径"
     )
     args = parser.parse_args()
+
     val_examples = args.val_examples
     vocab_path = args.vocab_path
     max_length = args.max_length
@@ -228,4 +228,10 @@ if __name__ == "__main__":
         warm_up_steps=warmup_steps,
         lr=lr,
     )
+    # d = torch.load('output_old/best.ckpt', map_location=torch.device("cpu"))["state_dict"]
+    # d.pop('model.classifier.bias')
+    # d.pop('model.classifier.weight')
+
+    # net.load_state_dict(d, strict=False)
     trainer.fit(net)
+
