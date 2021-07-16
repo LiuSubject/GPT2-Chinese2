@@ -151,21 +151,21 @@ def main():
     parser.add_argument("--topp", default=0, type=float, required=False, help="最高积累概率")
     parser.add_argument(
         "--model_config",
-        default="/content/drive/MyDrive/GPT2-Chinese/config/model_config.json",
+        default="/content/drive/MyDrive/GPT2-Chinese2/config/model_config.json",
         type=str,
         required=False,
         help="模型参数",
     )
     parser.add_argument(
         "--tokenizer_path",
-        default="/content/drive/MyDrive/GPT2-Chinese/vocab/vocab.txt",
+        default="/content/drive/MyDrive/GPT2-Chinese2/vocab/vocab.txt",
         type=str,
         required=False,
         help="词表路径",
     )
     parser.add_argument(
         "--model_path",
-        default="/content/drive/MyDrive/GPT2-Chinese/model/save.ckpt",
+        default="/content/drive/MyDrive/GPT2-Chinese2/model/save.ckpt",
         type=str,
         required=False,
         help="模型路径",
