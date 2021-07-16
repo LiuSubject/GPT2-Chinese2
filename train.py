@@ -54,7 +54,6 @@ class Net(pl.LightningModule):
         self.model_name = "bert_pretrained_model"
         self.config = GPT2Config.from_json_file(config_path)
         self.model = GPT2LMHeadModel(config=self.config)
-        self.data = [json.loads(line.strip()) for line in open(data_path)]
         self.data = [line for line in open(data_path)]
         self.dataset_train = DS(
             self.data[:-valid_examples], vocab_path=vocab_path, max_length=max_length
