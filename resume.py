@@ -157,7 +157,7 @@ if __name__ == "__main__":
         required=False,
         help="原始训练语料",
     )
-    parser.add_argument("--epochs", default=5, type=int, required=False, help="训练循环")
+    parser.add_argument("--epochs", default=20, type=int, required=False, help="训练循环")
     parser.add_argument(
         "--batch_size", default=3, type=int, required=False, help="训练batch size"
     )
@@ -225,6 +225,7 @@ if __name__ == "__main__":
             precision=32,
             resume_from_checkpoint='model/save.ckpt',
         )
+        trainer.fit()
     else:
         trainer = pl.Trainer(
             default_root_dir=output_path,
@@ -236,22 +237,16 @@ if __name__ == "__main__":
             callbacks=[learning_rate_callback, checkpoint_callback],
             precision=32,
         )
-    net = Net(
-        batch_size,
-        epochs,
-        t_total=t_total,
-        config_path=config_path,
-        data_path=data_path,
-        valid_examples=val_examples,
-        vocab_path=vocab_path,
-        max_length=max_length,
-        warm_up_steps=warmup_steps,
-        lr=lr,
-    )
-
-    print(trainer.current_epoch)
-    # if have_save_path:
-    #     checkpoint_get_epoch = torch.load('model/save.ckpt')
-    #     start_epoch = checkpoint_get_epoch['epoch']
-
-    # trainer.fit(net)
+        net = Net(
+            batch_size,
+            epochs,
+            t_total=t_total,
+            config_path=config_path,
+            data_path=data_path,
+            valid_examples=val_examples,
+            vocab_path=vocab_path,
+            max_length=max_length,
+            warm_up_steps=warmup_steps,
+            lr=lr,
+        )
+        trainer.setup_trainer()
