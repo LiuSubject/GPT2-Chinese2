@@ -37,7 +37,7 @@ class Net(pl.LightningModule):
         batch_size,
         epochs,
         t_total=100000,
-        config_path="config/model_config.json",
+        config_path="config/model_config_small.json",
         data_path="data/train.json",
         valid_examples=100,
         vocab_path="vocab/vocab.txt",
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--config_path",
-        default="config/model_config.json",
+        default="config/model_config_small.json",
         type=str,
         required=False,
         help="选择模型参数",
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--epochs", default=1000, type=int, required=False, help="训练循环")
     parser.add_argument(
-        "--batch_size", default=1, type=int, required=False, help="训练batch size"
+        "--batch_size", default=3, type=int, required=False, help="训练batch size"
     )
     parser.add_argument("--lr", default=0.00015, type=float, required=False, help="学习率")
     parser.add_argument(
