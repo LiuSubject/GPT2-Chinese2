@@ -55,6 +55,7 @@ class Net(pl.LightningModule):
         self.config = GPT2Config.from_json_file(config_path)
         self.model = GPT2LMHeadModel(config=self.config)
         self.data = [line for line in open(data_path)]
+        # self.data = [json.loads(line.strip()) for line in open(data_path)]
         self.dataset_train = DS(
             self.data[:-valid_examples], vocab_path=vocab_path, max_length=max_length
         )
@@ -167,7 +168,7 @@ if __name__ == "__main__":
         "--max_length", default=1024, type=int, required=False, help="单条文本最长长度"
     )
     parser.add_argument(
-        "--eval_interval", default=52, type=int, required=False, help="eval 步数"
+        "--eval_interval", default=100, type=int, required=False, help="eval 步数"
     )
     parser.add_argument(
         "--val_examples", default=100, type=int, required=False, help="选择多少验证集样本"
@@ -176,7 +177,7 @@ if __name__ == "__main__":
         "--t_total", default=100000, type=int, required=False, help="计划训练多少步"
     )
     parser.add_argument(
-        "--log_step", default=1, type=int, required=False, help="多少步汇报一次loss"
+        "--log_step", default=5, type=int, required=False, help="多少步汇报一次loss"
     )
     parser.add_argument(
         "--output_dir", default="model/", type=str, required=False, help="模型输出路径"
