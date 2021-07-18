@@ -202,11 +202,11 @@ def main():
     model = GPT2LMHeadModel(config=model_config)
     state_dict = {
         key[6:]: value
-        for key, value in torch.load(args.model_path)[
+        for key, value in torch.load(args.model_path, map_location='cpu')[
             "state_dict"
         ].items()
     }
-    # # model.load_state_dict(state_dict)
+    # model.load_state_dict(state_dict)
     # m = torch.load(args.model_path, map_location='cpu')
     # state_dict = m
     model.load_state_dict(state_dict)
@@ -233,4 +233,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
