@@ -207,8 +207,8 @@ def main():
         ].items()
     }
     # # model.load_state_dict(state_dict)
-    # m = torch.load(args.model_path, map_location='cpu')
-    # state_dict = m
+    m = torch.load(args.model_path, map_location='cpu')
+    state_dict = m
     model.load_state_dict(state_dict)
     model.to(device)
     model.eval()
